@@ -21,6 +21,13 @@ struct IntSet {
     }
 }
 
+
+extension IntSet: CustomStringConvertible {
+    var description: String {
+        return [Int](0 ... 10).filter{x in contains(x)}.description
+    }
+}
+
 extension IntSet {
     func union(_ otherSet: IntSet) -> IntSet {
         return IntSet{ x in
@@ -58,19 +65,27 @@ extension IntSet {
     }
 }
 
-extension IntSet: CustomStringConvertible {
-    var description: String {
-        return [Int](0 ... 10).filter{x in contains(x)}.description
-    }
+let evens = IntSet(){x in
+    x % 2 == 0
 }
 
+evens
+evens.contains(4)
+evens.contains(3)
+
+let twoThreeFour = IntSet(withRangeFrom: 2, to: 4)
+let primes = IntSet(2, 3, 5, 7)
+    
 
 let emptySet = IntSet()
 emptySet
 let universalSet = IntSet(contains: {(_) in return true})
 universalSet
 
-let twoThreeFour = IntSet(withRangeFrom: 2, to: 4)
+
+
+
+
 let threeFourFive = IntSet(3, 4, 5)
 
 twoThreeFour.union(threeFourFive)
