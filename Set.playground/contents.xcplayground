@@ -4,5 +4,6 @@
         <page name='Intro Post'/>
         <page name='Free Functions'/>
         <page name='Struct'/>
+        <page name='List'/>
     </pages>
 </playground>

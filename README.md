@@ -1,7 +1,7 @@
 # FunctionSets
 This is sample code for a sequence of blog posts exploring FP in Swift (http://editorscut.com/Blog/2018/01/16-Sets.html)
 
-This material began  with code Copyright (C) 2017 Graham Lee and
+The Set focused material began  with code Copyright (C) 2017 Graham Lee and
 licensed under the terms of the [MIT
 License](https://opensource.org/licenses/MIT). 
 

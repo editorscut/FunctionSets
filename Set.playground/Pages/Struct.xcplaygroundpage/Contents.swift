@@ -1,4 +1,4 @@
-//: Playground - noun: a place where people can play
+// Support code for http://editorscut.com/Blog/2018/01/22-SetsStructs.html
 
 
 struct IntSet {
@@ -20,7 +20,6 @@ struct IntSet {
         }
     }
 }
-
 
 extension IntSet: CustomStringConvertible {
     var description: String {
