@@ -1,4 +1,4 @@
-// Support code for http://editorscut.com/Blog/2018/02/12-Folding.html
+// Support code for http://editorscut.com/Blog/2018/02/15-BuildingOnOurFoundation.html
 
 
 indirect enum List<A> {
@@ -28,6 +28,16 @@ extension List: CustomStringConvertible  {
             return "( )"
         case let .cons(head, tail):
             return "(\(head)" + tail.description + ")"
+        }
+    }
+}
+extension List: Equatable where A: Equatable {
+    static func == (lhs: List, rhs: List) -> Bool {
+        switch (lhs, rhs) {
+        case (.empty, .empty): return true
+        case(.empty, .cons), (.cons, .empty): return false
+        case(.cons(let headL, let tailL), .cons(let headR, let tailR)):
+            return headL == headR && tailL == tailR
         }
     }
 }
@@ -62,6 +72,22 @@ extension List {
     func foldRight<B>(_ initialValue: B, _ f: @escaping(A, B) -> B) -> B {
         guard case let .cons(head, tail) = self else {return initialValue}
         return f(head, tail.foldRight(initialValue, f))
+    }
+    func reversed() -> List {
+        return foldLeft(List.empty){ (reversedList, element) in
+            List.cons(head: element, tail: reversedList)
+        }
+    }
+    func foldR<B>(_ initialValue: B, _ f: @escaping(A, B) -> B) -> B {
+        return reversed().foldLeft(initialValue){(b,a) in f(a,b)}
+    }
+    func map<B>(_ f: @escaping (A) -> B) -> List<B> {
+        return foldR(List<B>.empty){(element, mappedList) in
+            List<B>.cons(head: f(element), tail: mappedList)}
+    }
+    func filter(_ f: @escaping (A) -> Bool) -> List {
+        return foldR(List.empty){(element, filteredList) in
+            f(element) ? List.cons(head: element, tail: filteredList) : filteredList}
     }
 }
 
@@ -101,3 +127,21 @@ fiveSixSeven.foldRight(emptyList){(element, accumulator)
     in accumulator.append(element + 1)
 }
 
+twoThreeFour.reversed()
+emptyList.reversed()
+
+twoThreeFour == twoThreeFour.reversed()
+twoThreeFour == twoThreeFour.reversed().reversed()
+emptyList == emptyList.reversed()
+
+fiveSixSeven.foldR(emptyList){(element, accumulator)
+    in accumulator.append(element + 1)
+}
+let sixSevenEight = fiveSixSeven.map{x in x + 1}
+sixSevenEight
+
+let evens = sixSevenEight.filter{x in x % 2 == 0}
+evens
+
+let sixSeven = sixSevenEight.filter{x in x <= 7}
+sixSeven 

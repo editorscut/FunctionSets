@@ -6,5 +6,6 @@
         <page name='Struct'/>
         <page name='List'/>
         <page name='Folding'/>
+        <page name='BuildingOnOurFoundation'/>
     </pages>
 </playground>
