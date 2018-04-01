@@ -69,6 +69,8 @@ extension List {
         guard case let .cons(head, tail) = self else {return initialValue}
         return tail.foldLeft(f(initialValue, head), f)
     }
+    
+    
     func foldRight<B>(_ initialValue: B, _ f: @escaping(A, B) -> B) -> B {
         guard case let .cons(head, tail) = self else {return initialValue}
         return f(head, tail.foldRight(initialValue, f))
@@ -89,7 +91,41 @@ extension List {
         return foldR(List.empty){(element, filteredList) in
             f(element) ? List.cons(head: element, tail: filteredList) : filteredList}
     }
+
 }
+
+extension List {
+    func append(_ otherList: List) -> List {
+        return foldR(otherList){(a,b) in List.cons(head: a, tail: b)}
+    }
+    
+    func join<B>() -> List<B> where A == List<B> {
+        return foldR(List<B>.empty, {(a,b) in a.append(b)})
+    }
+    
+    func flatMap<B>(_ f: @escaping (A) -> List<B> ) -> List<B> {
+        return map(f).join()
+    }
+    
+    init(pure a: A) {
+        self = List.cons(head: a, tail: List.empty)
+    }
+    
+    func mapAlt<B>(_ f: @escaping (A) -> B) -> List<B> {
+        return flatMap{a in List<B>(pure:(f(a)))}
+    }
+    
+    func apply<B>(_ fs: List<(A) -> B>) -> List<B> {
+        return fs.foldR(List<B>.empty){
+            let f = $0
+            return $1.append(self.foldR(List<B>.empty){
+                List<B>.cons(head: f($0), tail: $1)
+            })
+        }
+    }
+}
+
+
 
 let emptyList = List<Int>.empty
 
@@ -144,4 +180,22 @@ let evens = sixSevenEight.filter{x in x % 2 == 0}
 evens
 
 let sixSeven = sixSevenEight.filter{x in x <= 7}
-sixSeven 
+sixSeven
+
+
+let lists = List.cons(head: twoThreeFour,
+                      tail: List.cons(head: fiveSixSeven,
+                                      tail: List.cons(head: sixSevenEight,
+                                                      tail: List.empty)))
+
+let listsA = twoThreeFour.append(fiveSixSeven).append(sixSevenEight)
+
+
+lists.join()
+
+let flatMapDoubleTwoThreFour
+    = twoThreeFour.flatMap{x in List.cons(head: x,
+                                          tail: List.cons(head: x,
+                                                          tail: List<Int>.empty))}
+
+flatMapDoubleTwoThreFour

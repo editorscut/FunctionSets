@@ -3,11 +3,9 @@
 
 struct IntSet {
     let contains: (Int) -> Bool
-    
-    init(contains: @escaping (Int) -> Bool) {
-        self.contains = contains
-    }
-    
+}
+
+extension IntSet {
     init(withRangeFrom lower: Int, to upper: Int) {
         contains = {x in
             (x >= lower) && (x <= upper)
