@@ -3,5 +3,7 @@
     <pages>
         <page name='TOC'/>
         <page name='FailureIsAnOption'/>
+        <page name='MaybeAList'/>
+        <page name='Untitled Page'/>
     </pages>
 </playground>
