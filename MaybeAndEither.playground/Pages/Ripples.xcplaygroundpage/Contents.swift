@@ -1,57 +1,8 @@
-struct Opt<Wrapped> {
-    private let backingList: List<Wrapped>
-}
+extension String: Error{}
 
-extension Opt {
-    init(_ value: Wrapped) {
-        self.init(backingList: List(value))
-    }
-    
-    init() {
-        self.init(backingList: List())
-    }
-    
-    var value: Wrapped { 
-        return backingList.head
-    }
-    
-    var isNil: Bool {
-        return backingList.isEmpty
-    }
-}
-
-extension Opt: CustomStringConvertible where Wrapped: CustomStringConvertible {
-    var description: String {
-        if isNil {return "nil"}
-        else {return "Opt(" + backingList.head.description + ")"}
-        
-    }
-}
-
-Opt(5)
-Opt<Int>()
-
-extension Opt {
-    func map<Output>(_ f: @escaping (Wrapped) -> Output)
-                           -> Opt<Output> {
-        return Opt<Output>(backingList: backingList.map(f))
-    }
-}
-
-func <^><A, B>(a: Opt<A>,
-               f: @escaping (A) -> B) -> Opt<B> {
-    return a.map(f)
-}
-
-extension Opt {
-    public func flatMap<Output>(_ f: @escaping (Wrapped) -> Opt<Output> ) -> Opt<Output> {
-        return Opt<Output>(backingList: backingList.flatMap{x in f(x).backingList})
-    }
-}
-
-func >=><A, B>(a: Opt<A>,
-                      f: @escaping (A) -> Opt<B>) -> Opt<B> {
-    return a.flatMap(f)
+func echoEvenOrThrow(_ input: Int) throws -> Int {
+    guard input.isEven else { throw "\(input) is odd"}
+    return input
 }
 
 func echoEvenOrNil(_ input: Int) -> Opt<Int> {
@@ -59,8 +10,6 @@ func echoEvenOrNil(_ input: Int) -> Opt<Int> {
     return Opt(input)
 }
 
-echoEvenOrNil(2)
-echoEvenOrNil(3)
 
 func halve(_ input: Int) -> Int {
     return input/2
@@ -72,6 +21,7 @@ func halveEvenOrNil(_ input: Opt<Int>) -> Opt<Int> {
         
         return Opt(halve(input.value))}
 }
+
 
 halveEvenOrNil(echoEvenOrNil(2))
 halveEvenOrNil(echoEvenOrNil(3))

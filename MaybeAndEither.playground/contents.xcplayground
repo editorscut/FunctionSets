@@ -4,6 +4,7 @@
         <page name='TOC'/>
         <page name='FailureIsAnOption'/>
         <page name='MaybeAList'/>
-        <page name='Untitled Page'/>
+        <page name='MaybeAnEnum'/>
+        <page name='Ripples'/>
     </pages>
 </playground>
