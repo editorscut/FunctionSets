@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='macos' executeOnSourceChanges='false'>
     <pages>
-        <page name='TOC'/>
         <page name='FailureIsAnOption'/>
         <page name='MaybeAList'/>
         <page name='MaybeAnEnum'/>
-        <page name='Ripples'/>
+        <page name='EitherIsBoth'/>
     </pages>
 </playground>
